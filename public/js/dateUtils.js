@@ -1,4 +1,4 @@
-import { fetchHolidays, fetchGlobalFixedHolidays } from './api.js';
+import { fetchHolidays } from './api.js';
 
 const feriadosCache = new Map();
 

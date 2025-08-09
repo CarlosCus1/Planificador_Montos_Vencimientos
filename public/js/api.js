@@ -69,19 +69,7 @@ export async function fetchHolidays(year) {
     }
 }
 
-/**
- * Obtiene los feriados fijos globales desde la función en la nube.
- * @returns {Promise<Array<{day: number, month: number, name: string}>>} - Una promesa que resuelve a un array de objetos de feriados fijos.
- */
-export async function fetchGlobalFixedHolidays() {
-    try {
-        const response = await fetchWithRetry('/api/getGlobalFixedHolidays');
-        return await response.json();
-    } catch (error) {
-        console.error('Error al obtener los feriados fijos globales:', error);
-        throw error;
-    }
-}
+
 
 /**
  * Consulta el RUC usando una API externa.
