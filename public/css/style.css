@@ -904,9 +904,9 @@ html[data-theme="dark"] .results-detail-section::after {
 }
 
 footer {
-    padding: calc(var(--spacing-unit) * 0.5) var(--spacing-unit);
+    padding: calc(var(--spacing-unit) * 0.25) var(--spacing-unit); /* Reduced padding */
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Smaller font size */
     color: var(--text-color-light);
     border-top: 1px solid var(--border-color);
     margin-top: calc(var(--spacing-unit) * 2);

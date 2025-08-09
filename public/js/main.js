@@ -84,7 +84,6 @@ class PlanificadorApp {
             btnDeselectAll: document.getElementById('btn-deselect-all'),
             btnCargarYDescargar: document.getElementById('btn-cargar-y-descargar'), // Nuevo botón para flujo directo
         btnCargarRespaldo: document.getElementById('btn-cargar-respaldo'), // Nuevo botón para carga de respaldo con opciones
-            btnCargarRespaldo: document.getElementById('btn-cargar-respaldo'), // Nuevo botón para carga de respaldo con opciones
             themeToggle: document.getElementById('theme-toggle'),
         };
     }
@@ -236,7 +235,7 @@ class PlanificadorApp {
         // Nuevo listener para el flujo de restauración directa
         btnCargarYDescargar?.addEventListener('click', () => this.cargarYDescargarExcel());
         // Nuevo listener para el botón de carga de respaldo con opciones
-        btnCargarRespaldo?.addEventListener('click', () => this.mostrarOpcionesRespaldo());
+        if (btnCargarRespaldo) { btnCargarRespaldo?.addEventListener('click', () => this.mostrarOpcionesRespaldo()); }
 
         // Listener para el botón de reiniciar
         document.getElementById('btn-reiniciar')?.addEventListener('click', () => {
