@@ -1,0 +1,34 @@
+# Archivos y directorios generados por el sistema o la aplicación
+.env
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+
+# Reportes de pruebas
+.coverage
+
+# Archivos temporales y de respaldo
+temp/
+
+# Dependencias de Node.js (si usas npm/yarn)
+node_modules/
+
+# Dependencias de Python
+venv/
+.venv/
+
+# Archivos de Firebase
+firebase-debug.log
+.firebase/
+
+# Archivos de Excel y JSON generados
+*.xlsx
+
+*.zip
+
+# Credenciales de Firebase (NO SUBIR A GITHUB)
+holiday_manager_app/planificador-vencimientos-78ae6f375497.json
+
+# Archivos .env específicos de la aplicación de feriados
+holiday_manager_app/.env

@@ -1,0 +1,8 @@
+firebase-functions
+firebase-admin
+Flask>=2.0.0
+Flask-Cors
+requests
+python-dotenv
+openpyxl==3.1.2
+Flask-Limiter==3.5.1

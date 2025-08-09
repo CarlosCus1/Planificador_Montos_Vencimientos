@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Vencimientos y Montos</title>
+    <meta name="description" content="Aplicación web para la distribución de montos en fechas de vencimiento, con gestión de feriados y generación de reportes.">
+    <meta name="author" content="Carlos Cusi, con la asistencia de Gemini Code Assist">
+    <meta name="keywords" content="planificador, vencimientos, finanzas, javascript, firebase, python, flask">
+    <!-- Evitar que los motores de búsqueda indexen esta herramienta interna -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/images/logo_cip_col.png" type="image/png">
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/calendar-base.css">
+    <link rel="stylesheet" href="/css/calendar-custom.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1 class="main-title">Planificador de Vencimientos</h1>
+            <!-- Interruptor de Tema Mejorado -->
+            <div id="theme-toggle" role="switch" aria-checked="false" aria-label="Cambiar tema" tabindex="0">
+                <div class="toggle-thumb">
+                    <span class="icon sun"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h3.75a.75.75 0 01.75.75zM18 12a.75.75 0 01-.75.75h-3.75a.75.75 0 010-1.5h3.75a.75.75 0 01.75.75zM12 18a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75zM12 6a6 6 0 110 12 6 6 0 010-12zM4.929 4.929a.75.75 0 011.06 0l1.591 1.59a.75.75 0 01-1.061 1.06l-1.59-1.59a.75.75 0 010-1.061zm12.021 0a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.061-1.06l1.59-1.59a.75.75 0 011.061 0zm-1.06 12.021a.75.75 0 01-1.06 0l-1.59-1.59a.75.75 0 011.06-1.061l1.591 1.59a.75.75 0 010 1.061zm-12.021 0a.75.75 0 010-1.06l1.59-1.59a.75.75 0 011.061 1.06l-1.59 1.59a.75.75 0 01-1.061 0z" /></svg></span>
+                    <span class="icon moon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.855 11.154 11.154 0 00-3.91 7.647c0 4.935 3.993 8.928 8.928 8.928a11.154 11.154 0 007.647-3.91.75.75 0 01.855.162 8.25 8.25 0 11-13.92-8.928 8.25 8.25 0 013.91-7.647z" clip-rule="evenodd" /></svg></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="progress-indicator">
+            <div class="step"><span>1</span> Fechas</div>
+            <div class="step"><span>2</span> Cliente</div>
+            <div class="step"><span>3</span> Resultados</div>
+        </div>
+
+        <div id="loading-overlay">
+            <div class="spinner"></div>
+            <p id="loading-message">Cargando...</p>
+        </div>
+
+        <div id="toast-container"></div>
+
+        <!-- Sección 1: Selección de Fechas -->
+        <section id="seleccion-fechas" class="page active">
+            <h2>Selección de Fechas</h2>
+            <div id="calendario-container"></div>
+            
+            <div class="fechas-seleccionadas">
+                <div class="fechas-header">
+                    <h3>Fechas Seleccionadas <span id="contador-fechas">(0)</span></h3>
+                    <button type="button" id="btn-deselect-all" class="btn-tertiary" hidden>Limpiar Selección</button>
+                </div>
+                <ul id="lista-fechas"></ul>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" id="btn-cargar-y-descargar" class="btn-secondary">Restaurar Reporte</button>
+                <button type="button" id="btn-siguiente" class="btn-primary">Siguiente</button>
+            </div>
+        </section>
+
+        <!-- Sección 2: Datos del Cliente -->
+        <section id="datos-cliente" class="page">
+            <h2>Datos del Cliente</h2>
+            <form id="formulario-cliente">
+                <div class="form-group">
+                    <label for="monto">Monto Total (S/)</label>
+                    <input type="number" id="monto" step="0.01" min="0" required>
+                    <span class="error-message" id="error-monto"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ruc">RUC</label>
+                    <input type="text" id="ruc" maxlength="11" pattern="\d{11}" required>
+                    <span class="error-message" id="error-ruc"></span>
+                    <div id="ruc-loading" class="loading-indicator" hidden>
+                        <div class="spinner"></div>
+                        <span>Buscando RUC...</span>
+                    </div>
+                    <div id="ruc-result" class="ruc-result" hidden></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="desc-cliente">Razón Social</label>
+                    <input type="text" id="desc-cliente">
+                    <span class="error-message" id="error-desc-cliente"></span>
+                    <span class="info-message" id="manual-razon-social-message" hidden></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="codigo-cliente">Código de Cliente (Opcional)</label>
+                    <input type="text" id="codigo-cliente" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label for="linea">Línea</label>
+                    <select id="linea" required>
+                        <option value="viniball">Viniball</option>
+                        <option value="vinifan">Vinifan</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pedido">Código de Pedido</label>
+                    <input type="text" id="pedido" maxlength="50">
+                    <span class="error-message" id="error-pedido"></span>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="btn-atras" class="btn-secondary">Atrás</button>
+                    <button type="button" id="btn-calcular" class="btn-primary">Calcular</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Sección 3: Resultados -->
+        <section id="resultados" class="page">
+            <h2>Resultados</h2>
+            <div class="results-layout">
+                <div class="results-top-section">
+                    <div class="table-container">
+                        <h3>Resumen por Mes</h3>
+                        <table id="tabla-resumen" class="data-table">
+                            <thead>
+                                <!-- Headers will be inserted here by JavaScript -->
+                            </thead>
+                            <tbody>
+                                <!-- Data will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <h3>Totales Comparativos</h3>
+                        <div id="totales-comparativos">
+                            <!-- Content will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="results-detail-section">
+                    <h3>Detalle por Fecha (Ajuste Manual)</h3>
+                    <div id="tabla-detalle-horizontal" class="detalle-horizontal-container">
+                        <!-- Content will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                <div class="results-chart-section">
+                    <h3>Resumen Mensual</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="grafico-resumen"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="btn-actualizar-calculos" class="btn-secondary">Reiniciar Cálculo</button>
+                <button type="button" id="btn-descargar-reportes" class="btn-primary">Descargar Reportes</button>
+                <button type="button" id="btn-cargar-respaldo" class="btn-secondary">Cargar Respaldo</button>
+                <button type="button" id="btn-reiniciar" class="btn-secondary">Nuevo Cálculo</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© <span id="current-year"></span> Planificador de Vencimientos - Versión 2.0</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+    <script type="module" src="/js/main.js"></script>
+</body>
+</html>

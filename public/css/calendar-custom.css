@@ -1,0 +1,240 @@
+/*
+ * ESTILOS PERSONALIZADOS PARA FULLCALENDAR
+ * -----------------------------------------
+ * La jerarquía de estilos es importante para un comportamiento predecible.
+ * El orden es:
+ * 1. Estilos base para días deshabilitados (pasados).
+ * 2. Estilos para Domingos.
+ * 3. Estilos para Feriados (tienen prioridad sobre Domingos).
+ * 4. Estilos para días seleccionados (máxima prioridad).
+*/
+
+/* 1. Días pasados (estado base deshabilitado) */
+.fc-daygrid-day.fc-day-past {
+    background-color: var(--calendar-disabled-bg);
+    opacity: 0.6;
+}
+.fc-daygrid-day.fc-day-past .fc-daygrid-day-number {
+    color: var(--text-color-light);
+    font-weight: normal; /* No resaltar días pasados */
+}
+
+/* 2. Domingos (no seleccionables) */
+.fc-daygrid-day.fc-day-sun {
+    background-color: var(--calendar-disabled-bg);
+    opacity: 0.7;
+}
+.fc-daygrid-day.fc-day-sun .fc-daygrid-day-number {
+    color: var(--danger-color);
+    font-weight: 500; /* Ligeramente resaltado */
+}
+
+/* 3. Feriados (tienen prioridad sobre domingos y días pasados) */
+.fc-daygrid-day.fc-holiday {
+    background-color: var(--calendar-holiday-bg);
+    opacity: 1; /* Los feriados deben ser claramente visibles */
+}
+.fc-daygrid-day.fc-holiday .fc-daygrid-day-number {
+    color: var(--warning-color); /* Usar color naranja/ámbar para feriados */
+    font-weight: 600; /* Resaltado fuerte */
+}
+
+/* 4. Día seleccionado (máxima prioridad visual) */
+.fc-day-selected .fc-daygrid-day-number {
+    background-color: var(--calendar-selected-bg) !important; /* Necesario para sobreescribir hover */
+    color: var(--primary-color) !important; /* Necesario para sobreescribir feriado/domingo */
+    font-weight: bold !important;
+    transform: scale(1.05);
+}
+/* Quitar el fondo de la celda contenedora al seleccionar para que solo el número tenga fondo */
+.fc-day-selected {
+    background-color: transparent;
+}
+
+
+/* Ajustes generales de botones y día actual */
+.fc .fc-button-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color-inverted);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 50%; /* Botones circulares */
+    width: 36px; /* Ancho fijo para botones circulares */
+    height: 36px; /* Alto fijo para botones circulares */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Eliminar padding para centrar el icono */
+    font-weight: 500;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: color-mix(in srgb, var(--primary-color) 85%, black);
+    border-color: color-mix(in srgb, var(--primary-color) 85%, black);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.fc .fc-button-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4); /* Sombra de enfoque más pronunciada */
+    outline: none;
+}
+/* Estilo para botones deshabilitados, como "Hoy" en el mes actual */
+.fc .fc-button-primary:disabled {
+    background-color: var(--background-disabled);
+    border-color: var(--border-color);
+    color: var(--text-color-light);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+/* Efecto de "presionar" para los botones activos */
+.fc .fc-button-primary:not(:disabled):active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+.fc .fc-button-group .fc-button {
+    border-radius: 50%; /* Asegura que los botones del grupo también sean circulares */
+}
+
+.fc .fc-today-button {
+    border-radius: var(--border-radius); /* Botón Hoy con bordes redondeados */
+    width: auto; /* Ancho automático */
+    height: 36px; /* Misma altura que los botones de navegación para alineación perfecta */
+    padding: 0 1rem; /* Padding horizontal, el centrado vertical es por flexbox */
+}
+
+/* Estilos para los números de día */
+.fc-daygrid-day-number {
+    color: var(--text-color);
+    transition: all 0.2s ease-in-out; /* Transición para todo */
+    font-size: 1em; /* Tamaño base aumentado para mejor legibilidad */
+    width: 2.5em; /* Círculo ajustado al nuevo tamaño */
+    height: 2.5em; /* Círculo ajustado al nuevo tamaño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Siempre forma de círculo */
+    background-color: transparent; /* Transparente por defecto */
+}
+
+/* Estilos para los nombres de los días de la semana */
+/* Se aplica al enlace <a> dentro de la celda del encabezado */
+.fc-col-header-cell-cushion {
+    display: block; /* Ocupa todo el espacio de la celda */
+    padding: 8px 4px; /* Padding más equilibrado */
+    text-decoration: none; /* Quitar subrayado del enlace */
+    color: inherit; /* Heredar color de la celda (th) */
+    text-align: center;
+}
+
+/* Se aplica a la celda <th> del encabezado */
+.fc-col-header-cell {
+    background-color: var(--background-hover);
+    border-bottom: 2px solid var(--primary-color); /* Línea inferior sólida para separar el encabezado */
+    font-weight: 600;
+    font-size: 0.8em; /* Ligeramente más pequeño y en mayúsculas para un look profesional */
+    text-transform: uppercase;
+    color: var(--text-color-light);
+}
+
+/* Estilo especial para el encabezado del domingo */
+.fc-col-header-cell.fc-day-sun {
+    color: var(--danger-color);
+}
+
+/* Estilos para el título del calendario */
+.fc-toolbar-title {
+    color: var(--text-color);
+    font-size: 1.6em; /* Ligeramente más grande para mayor jerarquía */
+    font-weight: 700; /* Más negrita */
+    transition: color 0.2s ease;
+}
+.fc-toolbar-title:hover {
+    color: var(--primary-color);
+    cursor: default;
+}
+
+/* Estilos para las celdas del calendario */
+.fc-daygrid-day {
+    aspect-ratio: 1/1; /* Asegura que las celdas sean cuadradas */
+    cursor: pointer;
+    position: relative; /* Necesario para los elementos internos de FullCalendar */
+}
+
+/* Hacemos que el 'frame' interno sea el contenedor flex para centrar el contenido */
+.fc-daygrid-day-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ocultar el contenedor de eventos para centrar mejor el número del día */
+.fc-daygrid-day-events {
+    display: none !important;
+}
+
+/* Celda de día seleccionada: el estilo se aplica al número */
+
+/* Hover para días válidos (que no están ya seleccionados) */
+.fc-daygrid-day:not(.fc-day-past):not(.fc-day-sunday):not(.fc-holiday):not(.fc-day-selected):hover .fc-daygrid-day-number {
+    background-color: var(--background-hover);
+    transform: scale(1.1); /* Animación de hover más pronunciada */
+}
+
+/* Media Queries para Responsividad */
+/* Para tablets y pantallas medianas (hasta 768px) - Ajustes menores */
+@media (max-width: 768px) {
+    #calendario-container {
+        max-width: 100%; /* Ajustado para ocupar todo el ancho */
+        margin: 0 auto; /* Centrar el calendario */
+        padding: 0 calc(var(--spacing-unit) / 2); /* Añadir un pequeño padding lateral */
+    }
+
+    /* Reducir el tamaño del título para que quepa mejor */
+    .fc .fc-toolbar-title {
+        font-size: 1.2em;
+    }
+
+    /* Reducir el tamaño de los botones de navegación */
+    .fc .fc-button-primary {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Ajustar el padding del botón "Hoy" */
+    .fc .fc-today-button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9em;
+    }
+}
+
+/* Para móviles y pantallas pequeñas (hasta 600px) - Apilamiento de la barra de herramientas */
+@media (max-width: 600px) {
+    .fc .fc-toolbar.fc-header-toolbar {
+        /* Mantenemos la barra en una sola fila para un diseño más compacto. */
+        gap: 8px; /* Reducimos el espacio entre elementos para que quepan mejor. */
+    }
+
+    .fc .fc-today-button {
+        width: auto; /* El botón ya no necesita ocupar el ancho completo. */
+    }
+}
+
+/* Para pantallas muy pequeñas (hasta 480px) - Ajustes de fuente finales */
+@media (max-width: 480px) {
+    .fc .fc-toolbar-title {
+        font-size: 1.2em; /* Ligeramente más grande para legibilidad */
+    }
+    /* Aumentar significativamente el tamaño del número del día para mejorar la interacción táctil */
+    .fc .fc-daygrid-day-number {
+        font-size: 1.4em; /* Aún más grande para máxima legibilidad */
+        width: 2.4em;     /* Círculo más ajustado al número */
+        height: 2.4em;    /* Círculo más ajustado al número */
+    }
+    /* Reducir el tamaño de los nombres de los días para dar más espacio */
+    .fc-col-header-cell-cushion {
+        font-size: 0.75em;
+    }
+}

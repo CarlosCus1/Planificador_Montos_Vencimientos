@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Deny all reads and writes by default for security.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Allow anyone to read the list of holidays.
+    // Writes should only be done by an admin tool or backend process.
+    match /holidays/{holidayId} {
+      allow read: if true;
+    }
+  }
+}

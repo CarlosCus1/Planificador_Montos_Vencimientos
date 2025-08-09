@@ -1,0 +1,30 @@
+/* Estilos para el Calendario */
+
+/* Estilos para FullCalendar */
+.fc .fc-daygrid-day.disabled-day {
+    background-color: var(--calendar-disabled-bg);
+    color: var(--text-color-light);
+    cursor: not-allowed;
+    opacity: 0.7; /* Ligeramente transparente */
+}
+
+.fc .fc-daygrid-day.disabled-day .fc-daygrid-day-number {
+    text-decoration: none;
+    color: var(--text-color-light); /* Asegura que el color del número sea el correcto */
+}
+
+.fc-event-title {
+    font-weight: bold;
+    color: var(--text-color-inverted); /* Color para títulos de eventos */
+}
+
+.fc-day-disabled {
+    background-color: var(--calendar-disabled-bg); /* Usa la variable definida */
+    pointer-events: none;
+    opacity: 0.7; /* Ligeramente transparente */
+}
+
+.fc-day-disabled .fc-daygrid-day-number {
+    color: var(--text-color-light); /* Usa la variable definida */
+    text-decoration: line-through;
+}
