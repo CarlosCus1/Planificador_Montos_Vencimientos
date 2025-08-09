@@ -83,6 +83,7 @@ class PlanificadorApp {
             btnActualizarCalculos: document.getElementById('btn-actualizar-calculos'),
             btnDeselectAll: document.getElementById('btn-deselect-all'),
             btnCargarYDescargar: document.getElementById('btn-cargar-y-descargar'), // Nuevo botón para flujo directo
+        btnCargarRespaldo: document.getElementById('btn-cargar-respaldo'), // Nuevo botón para carga de respaldo con opciones
             btnCargarRespaldo: document.getElementById('btn-cargar-respaldo'), // Nuevo botón para carga de respaldo con opciones
             themeToggle: document.getElementById('theme-toggle'),
         };
