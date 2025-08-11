@@ -140,7 +140,8 @@ main {
 /* Indicador de Progreso */
 .progress-indicator {
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* Changed from space-around */
+    gap: 2rem; /* Added gap for spacing between steps */
     margin: 0 auto var(--spacing-unit);
     max-width: 800px;
     padding-bottom: var(--spacing-unit);
@@ -903,25 +904,28 @@ html[data-theme="dark"] .results-detail-section::after {
     }
 }
 
-footer {
-    padding: calc(var(--spacing-unit) * 0.25) var(--spacing-unit); /* Reduced padding */
-    text-align: center;
-    font-size: 0.8rem; /* Smaller font size */
+/* Banner */
+.banner-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.1);
     color: var(--text-color-light);
-    border-top: 1px solid var(--border-color);
-    margin-top: calc(var(--spacing-unit) * 2);
-}
-
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-right {
+    font-size: 0.75rem;
     font-style: italic;
-    cursor: help;
+    border-top-left-radius: var(--border-radius);
+    z-index: 1000;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.banner-container:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.banner-container p {
+    margin: 0;
+}
+
+
+

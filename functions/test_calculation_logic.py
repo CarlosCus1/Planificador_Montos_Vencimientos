@@ -1,48 +1,34 @@
-import os
-import sys
-import json
-import time
+"""Tests for the calculation logic in services.py."""
+import pytest
+from services import perform_calculation, ApiError
 
-# Añadir el directorio raíz del proyecto al path para permitir importaciones
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, project_root)
+def test_perform_calculation_success():
+    """Tests that the calculation is performed correctly with valid data."""
+    monto_total = 5000.00
+    fechas_str = [
+        "15/08/2024",
+        "16/08/2024",
+        "19/08/2024",
+        "20/08/2024",
+        "21/08/2024"
+    ]
 
-# Importar la función de lógica pura y la clase de error
-from functions.main import _perform_calculation, ApiError
+    result = perform_calculation(monto_total, fechas_str)
 
-def test_calculation():
-    """
-    Simula una llamada a la lógica de cálculo para probar su rendimiento y corrección.
-    """
-    print("--- Iniciando prueba de lógica de cálculo ---")
+    assert "montosAsignados" in result
+    assert "resumenMensual" in result
 
-    # 1. Simular el payload que enviaría el frontend
-    sample_payload = {
-        "montoTotal": 5000.00,
-        "fechasValidas": [
-            "15/08/2024",
-            "16/08/2024",
-            "19/08/2024",
-            "20/08/2024",
-            "21/08/2024"
-        ]
-    }
-    print(f"Payload de prueba: {json.dumps(sample_payload, indent=2)}")
+    assert len(result["montosAsignados"]) == 5
+    assert round(sum(result["montosAsignados"].values()), 2) == monto_total
 
-    # 2. Llamar directamente a la función de lógica pura y medir el tiempo
-    try:
-        start_time = time.time()
-        result = _perform_calculation(
-            monto_total=sample_payload["montoTotal"],
-            fechas_str=sample_payload["fechasValidas"]
-        )
-        duration = (time.time() - start_time) * 1000  # en milisegundos
+    # Check monthly summary
+    assert "2024-08" in result["resumenMensual"]
+    assert round(result["resumenMensual"]["2024-08"], 2) == monto_total
 
-        print(f"\n--- ¡Cálculo exitoso! (Duración: {duration:.2f} ms) ---")
-        print("Resultado:")
-        print(json.dumps(result, indent=2))
-    except ApiError as e:
-        print(f"\n--- ERROR durante el cálculo: {e.message} (Código: {e.status_code}) ---")
-
-if __name__ == "__main__":
-    test_calculation()
+def test_perform_calculation_empty_dates():
+    """Tests that an ApiError is raised when the list of dates is empty."""
+    with pytest.raises(ApiError) as excinfo:
+        perform_calculation(5000.00, [])
+    
+    assert excinfo.value.status_code == 400
+    assert "The list of dates cannot be empty" in excinfo.value.message

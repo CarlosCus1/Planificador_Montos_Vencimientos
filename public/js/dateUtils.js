@@ -5,10 +5,11 @@ const feriadosCache = new Map();
 /**
  * Utilidades para el manejo de fechas
  */
+export const MONTH_NAMES_ES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
 export class DateUtils {
-    static MONTH_NAMES_ES_SHORT = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
 
     /**
      * Obtiene la lista de feriados peruanos para un año dado.

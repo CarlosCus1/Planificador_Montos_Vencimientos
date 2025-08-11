@@ -69,8 +69,6 @@ export async function fetchHolidays(year) {
     }
 }
 
-
-
 /**
  * Consulta el RUC usando una API externa.
  * @param {string} ruc - El RUC a consultar.

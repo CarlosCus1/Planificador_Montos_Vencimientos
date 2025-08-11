@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="/css/calendar-custom.css">
 </head>
 <body>
+    <div class="banner-container" title="Desarrollado por Carlos Cusi, con la asistencia de Gemini.">
+        <p id="banner-status-text">Planificador de Vencimientos v2.1</p>
+    </div>
     <header>
         <div class="header-container">
             <h1 class="main-title">Planificador de Vencimientos</h1>
@@ -39,9 +42,9 @@
 
     <main>
         <div class="progress-indicator">
-            <div class="step"><span>1</span> Fechas</div>
-            <div class="step"><span>2</span> Cliente</div>
-            <div class="step"><span>3</span> Resultados</div>
+            <div class="step" data-step="0" title="Ir a la selección de fechas"><span>1</span> Fechas</div>
+            <div class="step" data-step="1" title="Ir a los datos del cliente"><span>2</span> Cliente</div>
+            <div class="step" data-step="2" title="Ir a los resultados"><span>3</span> Resultados</div>
         </div>
 
         <div id="loading-overlay">
@@ -59,14 +62,13 @@
             <div class="fechas-seleccionadas">
                 <div class="fechas-header">
                     <h3>Fechas Seleccionadas <span id="contador-fechas">(0)</span></h3>
-                    <button type="button" id="btn-deselect-all" class="btn-tertiary" hidden>Limpiar Selección</button>
                 </div>
                 <ul id="lista-fechas"></ul>
             </div>
             
             <div class="form-actions">
-                <button type="button" id="btn-cargar-y-descargar" class="btn-secondary">Restaurar Reporte</button>
-                <button type="button" id="btn-siguiente" class="btn-primary">Siguiente</button>
+                <button type="button" id="btn-cargar-respaldo" class="btn-secondary">Cargar Respaldo</button>
+                <button type="button" id="btn-reiniciar-tarea" class="btn-primary large-button">Empezar de Nuevo</button>
             </div>
         </section>
 
@@ -113,13 +115,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="pedido">Código de Pedido</label>
-                    <input type="text" id="pedido" maxlength="50">
+                    <label for="pedido">Código de Pedido (Requerido)</label>
+                    <input type="text" id="pedido" maxlength="50" required>
                     <span class="error-message" id="error-pedido"></span>
                 </div>
                 
                 <div class="form-actions">
-                    <button type="button" id="btn-atras" class="btn-secondary">Atrás</button>
                     <button type="button" id="btn-calcular" class="btn-primary">Calcular</button>
                 </div>
             </form>
@@ -161,25 +162,21 @@
                     </div>
                 </div>
             </div>
+            <div id="recalculate-container" style="display: none;">
+                <p>Los datos han cambiado. Por favor, actualice el cálculo.</p>
+                <button type="button" id="btn-recalculate" class="btn-primary">Actualizar Cálculo</button>
+            </div>
             <div class="form-actions">
                 <button type="button" id="btn-actualizar-calculos" class="btn-secondary">Reiniciar Cálculo</button>
                 <button type="button" id="btn-descargar-reportes" class="btn-primary">Descargar Reportes</button>
-                <button type="button" id="btn-cargar-respaldo" class="btn-secondary">Cargar Respaldo</button>
-                <button type="button" id="btn-reiniciar" class="btn-secondary">Nuevo Cálculo</button>
+                <button type="button" id="btn-reiniciar" class="btn-secondary">Empezar de Nuevo</button>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-left">
-                © <span id="current-year"></span> Planificador de Vencimientos - Versión 2.0
-            </div>
-            <div class="footer-right" title="Aplicación web para la planificación y distribución de montos en fechas de vencimiento, con gestión dinámica de feriados peruanos y generación de reportes profesionales.">
-                cc_Planificador de vencimientos v2.0
-            </div>
-        </div>
-    </footer>
+    
+
+    
 
     <!-- Scripts -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>

@@ -8,7 +8,6 @@
       "source": "functions",
       "codebase": "default",
       "runtime": "python311",
-      "timeoutSeconds": 120,
       "ignore": [
         "venv",
         ".venv",
@@ -17,8 +16,15 @@
         ".gitignore",
         ".vscode",
         "firebase-debug.log",
-        "*.log"
-      ]
+        "*.log",
+        "public",
+        ".pytest_cache",
+        "test_*.py",
+        ".env"
+      ],
+      "runtimeOptions": {
+        "timeoutSeconds": 120
+      }
     }
   ],
   "hosting": {

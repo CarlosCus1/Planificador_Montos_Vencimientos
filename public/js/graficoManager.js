@@ -84,4 +84,15 @@ export class GraficoManager {
             }
         });
     }
+
+    clearChart() {
+        if (this.chart) {
+            this.chart.destroy();
+            this.chart = null; // Clear the reference
+        }
+        // Optionally, clear the canvas if needed, though destroy usually handles it
+        if (this.ctx) {
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        }
+    }
 }

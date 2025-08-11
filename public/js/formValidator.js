@@ -14,11 +14,14 @@ export class FormValidator {
         if (data.fechas.length > MAX_FECHAS) {
             generalErrors.push(`No puede seleccionar más de ${MAX_FECHAS} fechas.`);
         }
-        if (!/^\d{11}$/.test(data.ruc)) {
+        if (typeof data.ruc !== 'string' || !/^\d{11}$/.test(data.ruc)) {
             fieldErrors.push({ field: 'ruc', message: LABELS.error_ruc });
         }
         if (!data.razonSocial) {
             fieldErrors.push({ field: 'desc-cliente', message: LABELS.error_razon_social_empty });
+        }
+        if (!data.pedido || data.pedido.trim() === '') {
+            fieldErrors.push({ field: 'pedido', message: 'El código de pedido es requerido.' });
         }
 
         return { fieldErrors, generalErrors, isValid: fieldErrors.length === 0 && generalErrors.length === 0 };

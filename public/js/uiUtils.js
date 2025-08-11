@@ -11,21 +11,15 @@ export class UIUtils {
     static normalizeStringForFilename(str) {
         if (typeof str !== 'string' || !str) return '';
 
-        let cleanStr = str.toString();
+        // Convert to string, normalize to NFD, remove diacritics, replace non-alphanumeric with underscore
+        let cleanStr = str.toString()
+                          .normalize('NFD')
+                          .replace(/[\u0300-\u036f]/g, '')
+                          .replace(/[^a-zA-Z0-9_.-]/g, '_'); // Replace invalid chars with underscore
 
-        // Reemplazar espacios con guiones bajos
-        cleanStr = cleanStr.replace(/\s+/g, '_');
-
-        // Normalizar caracteres acentuados y eliminar diacríticos (ej. "é" -> "e")
-        cleanStr = cleanStr.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-        // Eliminar caracteres especiales que son problemáticos en nombres de archivo
-        cleanStr = cleanStr.replace(/[^a-zA-Z0-9_.-]/g, ''); // Permitir guiones y puntos
-
-        // Eliminar guiones bajos o guiones al inicio o final si los hubiera por los reemplazos anteriores
-        cleanStr = cleanStr.replace(/^_+|_+$/g, '');
-        cleanStr = cleanStr.replace(/^-+|-+$/g, '');
-        cleanStr = cleanStr.replace(/^\.+|\.+$/g, ''); // Eliminar puntos al inicio/final
+        // Replace multiple underscores with a single one, and trim leading/trailing underscores/dashes/dots
+        cleanStr = cleanStr.replace(/_+/g, '_')
+                           .replace(/^-+|-+$|_+$|\.+$/g, '');
 
         return cleanStr;
     }

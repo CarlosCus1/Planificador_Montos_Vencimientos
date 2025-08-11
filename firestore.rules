@@ -13,5 +13,11 @@ service cloud.firestore {
     match /holidays/{holidayId} {
       allow read: if true;
     }
+
+    // RUC cache should only be accessible by the backend.
+    // The Admin SDK bypasses these rules, but this is for clarity and security.
+    match /ruc_cache/{rucId} {
+      allow read, write: if false;
+    }
   }
 }

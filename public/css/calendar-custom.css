@@ -33,6 +33,7 @@
 .fc-daygrid-day.fc-holiday {
     background-color: var(--calendar-holiday-bg);
     opacity: 1; /* Los feriados deben ser claramente visibles */
+    cursor: help; /* Indica al usuario que hay un tooltip disponible */
 }
 .fc-daygrid-day.fc-holiday .fc-daygrid-day-number {
     color: var(--warning-color); /* Usar color naranja/ámbar para feriados */

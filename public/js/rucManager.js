@@ -65,23 +65,19 @@ export class RUCManager {
      */
     _triggerRucSearch() {
         const ruc = this.rucInput.value.trim();
+
         if (ruc.length === 11) {
             if (ruc !== this.lastRUC) {
                 this.buscarRUC(ruc);
                 this.lastRUC = ruc;
-            } else {
-                // Si el RUC no ha cambiado, pero el usuario intenta buscar de nuevo,
-                // simplemente muestra el resultado actual si ya lo tiene.
-                if (this.rucResult.innerHTML !== '') {
-                    this.rucResult.hidden = false;
-                }
+            } else if (this.rucResult.innerHTML !== '') {
+                // If RUC hasn't changed, but user tries to search again, show current result
+                this.rucResult.hidden = false;
             }
-        } else if (ruc.length > 0 && ruc.length !== 11) {
+        } else if (ruc.length > 0) {
             this.mostrarError('El RUC debe tener 11 dígitos');
-        } else if (ruc.length === 0) {
-            this.reset(); // Si el campo está vacío, resetear
         } else {
-            this.ocultarError(); // Clear error if RUC is valid length
+            this.reset(); // If field is empty, reset
         }
     }
 
@@ -103,9 +99,7 @@ export class RUCManager {
             if (error.data && error.data.allowManual) {
                 this.habilitarRazonSocialManual();
             } else {
-                // Si no hay allowManual, pero la búsqueda falló, también permitir manual
-                this.habilitarRazonSocialManual();
-                this.razonSocialManualMessage.textContent = 'Error al consultar RUC. Puede ingresar la razón social manualmente.';
+                this.habilitarRazonSocialManual('Error al consultar RUC. Puede ingresar la razón social manualmente.');
             }
         } finally {
             this.ocultarCargando();
@@ -209,10 +203,10 @@ export class RUCManager {
     /**
      * Habilita la entrada manual de la razón social
      */
-    habilitarRazonSocialManual() {
+    habilitarRazonSocialManual(message = 'Puede ingresar la razón social manualmente.') {
         this.descClienteInput.readOnly = false;
         this.descClienteInput.value = ''; // Limpiar el campo para entrada manual
-        this.razonSocialManualMessage.textContent = 'No se pudo consultar el RUC. Puede ingresar la razón social manualmente.';
+        this.razonSocialManualMessage.textContent = message;
         this.razonSocialManualMessage.hidden = false;
     }
 }
