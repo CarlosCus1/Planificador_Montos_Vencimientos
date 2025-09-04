@@ -3,7 +3,8 @@
 
   <div class="form-group">
     <label for="monto">Monto Total (S/)</label>
-    <input type="number" id="monto" formControlName="monto" class="form-control">
+    <input type="text" id="monto" formControlName="monto" class="form-control"
+           mask="separator.2" thousandSeparator="," prefix="S/ ">
     <div *ngIf="clientForm.get('monto')?.invalid && clientForm.get('monto')?.touched" class="error-message">
       Monto es requerido.
     </div>

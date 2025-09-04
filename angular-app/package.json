@@ -25,7 +25,8 @@
     "@fullcalendar/core": "^6.1.10",
     "@fullcalendar/daygrid": "^6.1.10",
     "@fullcalendar/interaction": "^6.1.10",
-    "chart.js": "^4.4.1"
+    "chart.js": "^4.4.1",
+    "ngx-mask": "^15.1.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.4",

@@ -5,16 +5,62 @@
     <div class="results-top-section">
       <div class="table-container">
         <h3>Resumen por Mes</h3>
-        <!-- Placeholder for summary table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th>Monto</th>
+              <th>%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let month of objectKeys(results.resumenMensual)">
+              <td>{{ month }}</td>
+              <td>{{ results.resumenMensual[month].monto | number:'1.2-2' }}</td>
+              <td>{{ results.resumenMensual[month].porcentaje | number:'1.2-2' }}%</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="table-container">
         <h3>Totales Comparativos</h3>
-        <!-- Placeholder for comparison totals -->
+        <div class="comparison-totals">
+          <div>
+            <span>Monto Original:</span>
+            <span>{{ results.montoOriginal | number:'1.2-2' }}</span>
+          </div>
+          <div>
+            <span>Monto Ajustado:</span>
+            <span>{{ adjustedTotal | number:'1.2-2' }}</span>
+          </div>
+          <hr>
+          <div>
+            <span>Diferencia:</span>
+            <span [ngClass]="{'positive': totalDifference > 0, 'negative': totalDifference < 0}">
+              {{ totalDifference | number:'1.2-2' }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="results-detail-section">
       <h3>Detalle por Fecha (Ajuste Manual)</h3>
-      <!-- Placeholder for detail table -->
+      <div class="detalle-horizontal-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th *ngFor="let date of objectKeys(adjustedMontos)">{{ date }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td *ngFor="let date of objectKeys(adjustedMontos)">
+                <input type="number" [(ngModel)]="adjustedMontos[date]" (ngModelChange)="onMontoAdjusted()">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="results-chart-section">
       <h3>Resumen Mensual</h3>

@@ -10,19 +10,44 @@ Chart.register(...registerables);
 export class ResultsDisplayComponent implements OnChanges {
   @Input() results: any;
   @ViewChild('graficoResumen') private chartRef: ElementRef;
+
   private chart: Chart;
+  adjustedMontos: { [key: string]: number } = {};
+  adjustedTotal = 0;
+  totalDifference = 0;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['results'] && this.results) {
+      // When new results come in, reset adjustments
+      this.adjustedMontos = { ...this.results.montosAsignados };
+      this.calculateAdjustedTotal();
       this.createChart();
     }
+  }
+
+  // Expose Object.keys to the template
+  objectKeys(obj: object): string[] {
+    return Object.keys(obj);
+  }
+
+  calculateAdjustedTotal(): void {
+    this.adjustedTotal = Object.values(this.adjustedMontos).reduce((sum, current) => sum + Number(current), 0);
+    this.totalDifference = this.results.montoOriginal - this.adjustedTotal;
+  }
+
+  onMontoAdjusted(): void {
+    this.calculateAdjustedTotal();
   }
 
   createChart(): void {
     if (this.chart) {
       this.chart.destroy();
+    }
+
+    if (!this.results || !this.chartRef) {
+      return;
     }
 
     const labels = Object.keys(this.results.resumenMensual);
