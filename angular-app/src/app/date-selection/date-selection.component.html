@@ -1,0 +1,16 @@
+<div class="calendar-layout">
+  <div class='app-calendar'>
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  </div>
+  <div class="selected-dates">
+    <h3>Fechas Seleccionadas ({{ selectedDates.size }})</h3>
+    <ul id="lista-fechas">
+      <li *ngFor="let date of selectedDates | keyvalue">
+        {{ date.key }}
+      </li>
+    </ul>
+    <button (click)="clearSelection()" class="btn-secondary" [disabled]="selectedDates.size === 0">
+      Limpiar Selección
+    </button>
+  </div>
+</div>

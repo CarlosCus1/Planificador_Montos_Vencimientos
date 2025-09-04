@@ -1,0 +1,39 @@
+.calendar-layout {
+  display: flex;
+  gap: 2rem;
+}
+
+.app-calendar {
+  flex-grow: 1;
+}
+
+.selected-dates {
+  flex-basis: 300px;
+  flex-shrink: 0;
+  border-left: 1px solid #ddd;
+  padding-left: 2rem;
+}
+
+/* Deep selector to override FullCalendar's default styles */
+:host ::ng-deep .fc-holiday {
+  background-color: #ffcdd2;
+}
+
+:host ::ng-deep .fc-day-selected {
+  background-color: #bbdefb !important;
+}
+
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-secondary:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
